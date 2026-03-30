@@ -12,7 +12,17 @@ A `PermissionedGroup<T>` is a shared Sui object that holds a list of members and
 
 Your package defines what the permissions mean (e.g. `Editor`, `Viewer`, `FundsManager`). The library handles storing them, enforcing who can grant or revoke them, and emitting events when things change.
 
-See the Smart Contracts page for the permission hierarchy, and the Extending guide for how to build on top of this.
+See the [Smart Contracts](docs/SmartContracts.md) page for the permission hierarchy, and the [Extending](docs/Extending.md) guide for how to build on top of this.
+
+## Documentation
+
+- [Smart Contracts](docs/SmartContracts.md) — Permission model, actor objects, pause/unpause, events
+- [Installation](docs/Installation.md) — npm install, peer dependencies, build from source
+- [Setup](docs/Setup.md) — Client extension setup, configuration, sub-modules
+- [API Reference](docs/APIRef.md) — Full method reference (imperative, tx, call, view, bcs)
+- [Extending](docs/Extending.md) — Write your own Move package, actor objects, Display, TS client
+- [Examples](docs/Examples.md) — Common patterns and code snippets
+- [Testing](docs/Testing.md) — Unit, integration, and linting
 
 ## Features
 
