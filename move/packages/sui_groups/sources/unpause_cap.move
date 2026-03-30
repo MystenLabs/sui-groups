@@ -15,7 +15,7 @@
 /// group.unpause(cap, ctx);
 /// ```
 ///
-/// **Archive pattern (messaging layer):**
+/// **Archive pattern:**
 /// ```
 /// // get uid before pausing
 /// let uid = group.object_uid_mut(&group_manager.id);
