@@ -271,7 +271,7 @@ public fun delete<T: drop>(
     self: PermissionedGroup<T>,
     ctx: &TxContext,
 ): (PermissionsTable, u64, address) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     assert!(self.has_permission<T, GroupDeleter>(ctx.sender()), ENotPermitted);
     let PermissionedGroup { id, permissions, permissions_admin_count, creator } = self;
     event::emit(GroupDeleted<T> { group_id: id.to_inner(), deleter: ctx.sender() });
@@ -336,9 +336,9 @@ public fun grant_permission<T: drop, NewPermission: drop>(
     member: address,
     ctx: &TxContext,
 ) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     // Verify caller has permission to grant this permission type
-    self.assert_can_manage_permission<T, NewPermission>(ctx.sender());
+    self.assert_can_manage_permission!<T, NewPermission>(ctx.sender());
 
     // internal_grant_permission handles member addition and permission granting
     self.internal_grant_permission<T, NewPermission>(member);
@@ -368,11 +368,11 @@ public fun object_grant_permission<T: drop, NewPermission: drop>(
     actor_object: &UID,
     recipient: address,
 ) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     let actor_address = actor_object.to_address();
 
     // Verify actor has permission to grant this permission type
-    self.assert_can_manage_permission<T, NewPermission>(actor_address);
+    self.assert_can_manage_permission!<T, NewPermission>(actor_address);
 
     // internal_grant_permission handles member addition and permission granting
     self.internal_grant_permission<T, NewPermission>(recipient);
@@ -395,7 +395,7 @@ public fun remove_member<T: drop>(
     member: address,
     ctx: &TxContext,
 ) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     assert!(self.has_permission<T, PermissionsAdmin>(ctx.sender()), ENotPermitted);
     assert!(self.is_member<T>(member), EMemberNotFound);
     self.safe_decrement_permissions_admin_count(member);
@@ -425,7 +425,7 @@ public fun object_remove_member<T: drop>(
     actor_object: &UID,
     member: address,
 ) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     let actor_address = actor_object.to_address();
     assert!(self.has_permission<T, PermissionsAdmin>(actor_address), ENotPermitted);
     assert!(self.is_member<T>(member), EMemberNotFound);
@@ -465,9 +465,9 @@ public fun revoke_permission<T: drop, ExistingPermission: drop>(
     member: address,
     ctx: &TxContext,
 ) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     // Verify caller has permission to revoke this permission type
-    self.assert_can_manage_permission<T, ExistingPermission>(ctx.sender());
+    self.assert_can_manage_permission!<T, ExistingPermission>(ctx.sender());
 
     assert!(self.permissions.is_member(member), EMemberNotFound);
 
@@ -500,11 +500,11 @@ public fun object_revoke_permission<T: drop, ExistingPermission: drop>(
     actor_object: &UID,
     member: address,
 ) {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     let actor_address = actor_object.to_address();
 
     // Verify actor has permission to revoke this permission type
-    self.assert_can_manage_permission<T, ExistingPermission>(actor_address);
+    self.assert_can_manage_permission!<T, ExistingPermission>(actor_address);
 
     assert!(self.permissions.is_member(member), EMemberNotFound);
 
@@ -568,7 +568,7 @@ public fun creator<T: drop>(self: &PermissionedGroup<T>): address {
 /// # Aborts
 /// - `ENotPermitted`: if actor_object doesn't have `ObjectAdmin` permission
 public fun object_uid<T: drop>(self: &PermissionedGroup<T>, actor_object: &UID): &UID {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     assert!(self.has_permission<T, ObjectAdmin>(actor_object.to_address()), ENotPermitted);
     &self.id
 }
@@ -581,7 +581,7 @@ public fun object_uid<T: drop>(self: &PermissionedGroup<T>, actor_object: &UID):
 /// # Aborts
 /// - `ENotPermitted`: if actor_object doesn't have `ObjectAdmin` permission
 public fun object_uid_mut<T: drop>(self: &mut PermissionedGroup<T>, actor_object: &UID): &mut UID {
-    self.assert_not_paused();
+    self.assert_not_paused!();
     assert!(self.has_permission<T, ObjectAdmin>(actor_object.to_address()), ENotPermitted);
     &mut self.id
 }
@@ -611,7 +611,8 @@ public fun member_count<T: drop>(self: &PermissionedGroup<T>): u64 {
 // === Private Functions ===
 
 /// Asserts that the group is not paused.
-fun assert_not_paused<T: drop>(self: &PermissionedGroup<T>) {
+macro fun assert_not_paused<$T: drop>($self: &PermissionedGroup<$T>) {
+    let self = $self;
     assert!(!self.is_paused(), EGroupPaused);
 }
 
@@ -636,16 +637,18 @@ fun is_core_permission<Permission: drop>(): bool {
 /// Asserts that the manager has permission to manage (grant/revoke) the specified permission type.
 /// - Core permissions (from this package): manager must have `PermissionsAdmin`
 /// - Extension permissions (from other packages): manager must have `ExtensionPermissionsAdmin`
-fun assert_can_manage_permission<T: drop, Permission: drop>(
-    self: &PermissionedGroup<T>,
-    manager: address,
+macro fun assert_can_manage_permission<$T: drop, $Permission: drop>(
+    $self: &PermissionedGroup<$T>,
+    $manager: address,
 ) {
-    if (is_core_permission<Permission>()) {
+    let self = $self;
+    let manager = $manager;
+    if (is_core_permission<$Permission>()) {
         // Core permissions → only PermissionsAdmin
-        assert!(self.has_permission<T, PermissionsAdmin>(manager), ENotPermitted);
+        assert!(self.has_permission<$T, PermissionsAdmin>(manager), ENotPermitted);
     } else {
         // Extension permissions → only ExtensionPermissionsAdmin
-        assert!(self.has_permission<T, ExtensionPermissionsAdmin>(manager), ENotPermitted);
+        assert!(self.has_permission<$T, ExtensionPermissionsAdmin>(manager), ENotPermitted);
     };
 }
 

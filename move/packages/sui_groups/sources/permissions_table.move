@@ -59,7 +59,7 @@ public(package) fun add_member(
 }
 
 /// Removes a member and their entire permission set from the table.
-public(package) fun remove_member(self: &mut PermissionsTable, member: address) {
+public fun remove_member(self: &mut PermissionsTable, member: address) {
     let _permissions_entry = field::remove<address, VecSet<TypeName>>(&mut self.id, member);
     self.length = self.length - 1;
 }
@@ -100,7 +100,7 @@ public(package) fun has_permission(
 }
 
 /// Returns whether the given address is a member (has a dynamic field entry).
-public(package) fun is_member(self: &PermissionsTable, member: address): bool {
+public fun is_member(self: &PermissionsTable, member: address): bool {
     field::exists_with_type<address, VecSet<TypeName>>(&self.id, member)
 }
 
