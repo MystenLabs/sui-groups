@@ -1,0 +1,14 @@
+# Data directory
+data
+
+# Environment files (contains secrets)
+.env
+.env.local
+
+# Node.js
+node_modules
+.tsbuildinfo
+*.tsbuildinfo
+
+# IDE
+.DS_Store

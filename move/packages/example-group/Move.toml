@@ -1,0 +1,9 @@
+[package]
+name = "example_group"
+edition = "2024.beta"
+
+[dependencies]
+sui_groups = { local = "../sui_groups" }
+
+[addresses]
+example_group = "0x0"

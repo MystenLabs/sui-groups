@@ -1,0 +1,15 @@
+[package]
+name = "sui_groups"
+edition = "2024.beta"
+
+[dependencies]
+
+[addresses]
+sui_groups = "0x0"
+
+[dev-addresses]
+sui_groups = "0x0"
+
+[environments]
+mainnet = { chain-id = "35834a8a" }
+testnet = { chain-id = "4c78adac" }

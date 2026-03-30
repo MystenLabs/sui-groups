@@ -1,0 +1,25 @@
+{
+  "name": "@dapp-template/publish",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "env-cmd -f .env tsx src/scripts/publish.ts",
+    "deploy-bytes": "env-cmd -f .env tsx src/scripts/publishBytes.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "env-cmd": "^11.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@mysten/sui": "^2.6.0",
+    "zod": "^4.2.1"
+  }
+}

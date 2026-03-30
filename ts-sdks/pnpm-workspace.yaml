@@ -1,0 +1,10 @@
+autoInstallPeers: false
+minimumReleaseAge: 2880
+minimumReleaseAgeExclude:
+  - '@mysten/sui'
+  - '@mysten/bcs'
+  - '@mysten/codegen'
+packages:
+  - 'packages/**'
+  - '../publish'
+  - '!**/dist/**'

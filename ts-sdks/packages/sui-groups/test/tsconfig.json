@@ -1,0 +1,12 @@
+{
+	"extends": "../tsconfig.json",
+	"include": ["./**/*", "../src", "../../../../publish/src/utils/**/*"],
+	"compilerOptions": {
+		"noEmit": true,
+		"emitDeclarationOnly": false,
+		"resolveJsonModule": true,
+		"paths": {
+			"@publish-utils": ["../../../../publish/src/utils/index.ts"]
+		}
+	}
+}

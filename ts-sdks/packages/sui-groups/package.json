@@ -1,0 +1,57 @@
+{
+	"name": "@mysten/sui-groups",
+	"version": "0.0.1",
+	"private": false,
+	"description": "Permissioned Groups",
+	"license": "Apache-2.0",
+	"author": "Mysten Labs <build@mystenlabs.com>",
+	"type": "module",
+	"main": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"sideEffects": false,
+	"files": [
+		"dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MystenLabs/sui-groups.git"
+	},
+	"bugs": {
+		"url": "https://github.com/MystenLabs/sui-groups/issues/new"
+	},
+	"scripts": {
+		"clean": "rm -rf tsconfig.tsbuildinfo ./dist",
+		"build": "rm -rf dist && tsc --noEmit && tsdown",
+		"codegen:summaries": "(cd ../../../move/packages/sui_groups && sui move summary)",
+		"codegen": "pnpm codegen:summaries && sui-ts-codegen generate && pnpm lint:fix",
+		"prettier:check": "prettier -c --ignore-unknown .",
+		"prettier:fix": "prettier -w --ignore-unknown .",
+		"oxlint:check": "oxlint .",
+		"oxlint:fix": "oxlint --fix .",
+		"vitest": "vitest",
+		"test": "pnpm test:typecheck && pnpm test:unit",
+		"test:typecheck": "tsc -p ./test",
+		"test:unit": "vitest run unit",
+		"test:integration": "vitest run --config vitest.integration.config.mts",
+		"lint": "pnpm run oxlint:check && pnpm run prettier:check",
+		"lint:fix": "pnpm run oxlint:fix && pnpm run prettier:fix"
+	},
+	"devDependencies": {
+		"@mysten/bcs": "^2.0.3",
+		"@mysten/codegen": "^0.8.3",
+		"@mysten/sui": "^2.13.0",
+		"testcontainers": "^11.13.0",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.18"
+	},
+	"peerDependencies": {
+		"@mysten/bcs": "^2.0.3",
+		"@mysten/sui": "^2.13.0"
+	}
+}
