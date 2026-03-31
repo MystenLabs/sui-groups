@@ -20,6 +20,7 @@ pnpm changeset
 ```
 
 This runs the interactive `@changesets/cli`. It will:
+
 1. Ask which package(s) are affected
 2. Ask the semver bump type (patch / minor / major)
 3. Ask for a summary of the change
@@ -42,6 +43,7 @@ After review, merge to `main` as usual.
 ### 3. Release via the "Version Packages" PR
 
 After merge, the `changesets.yml` workflow creates or updates a PR titled **"Version Packages"**. This PR:
+
 - Bumps the version in `package.json` based on the changeset(s)
 - Updates `CHANGELOG.md`
 - Removes the consumed changeset files
@@ -60,6 +62,7 @@ npm publish --access public
 ```
 
 After the first publish, configure the **OIDC trusted publisher** on [npmjs.com](https://www.npmjs.com):
+
 - Package settings → Publishing access → Add trusted publisher
 - Repository: `MystenLabs/sui-groups`
 - Workflow: `changesets.yml`
@@ -67,8 +70,8 @@ After the first publish, configure the **OIDC trusted publisher** on [npmjs.com]
 
 ## Semver guidelines
 
-| Bump    | When to use                                                 |
-|---------|-------------------------------------------------------------|
-| `patch` | Bug fixes, internal refactors with no public API change     |
-| `minor` | New features, non-breaking additions to the public API      |
-| `major` | Breaking changes to the public API                          |
+| Bump    | When to use                                             |
+| ------- | ------------------------------------------------------- |
+| `patch` | Bug fixes, internal refactors with no public API change |
+| `minor` | New features, non-breaking additions to the public API  |
+| `major` | Breaking changes to the public API                      |
