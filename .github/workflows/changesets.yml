@@ -17,6 +17,9 @@ permissions:
 jobs:
   version:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ts-sdks
     steps:
       - name: checkout code repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # Pin v4.1.1
@@ -33,13 +36,47 @@ jobs:
           cache-dependency-path: ts-sdks/pnpm-lock.yaml
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        working-directory: ts-sdks
-      - name: Create Release Pull Request or Publish Latest Version
-        uses: changesets/action@v1.5.3
+      - name: Check for pending changesets
+        id: changesets
+        run: |
+          # Check if there are any changeset files (excluding README.md and config.json)
+          CHANGESET_COUNT=$(find .changeset -name "*.md" ! -name "README.md" 2>/dev/null | wc -l)
+          if [ "$CHANGESET_COUNT" -gt 0 ]; then
+            echo "pending=true" >> $GITHUB_OUTPUT
+            echo "Found $CHANGESET_COUNT pending changeset(s)"
+          else
+            echo "pending=false" >> $GITHUB_OUTPUT
+            echo "No pending changesets"
+          fi
+      - name: Check if version needs publishing
+        if: steps.changesets.outputs.pending == 'false'
+        id: publish-check
+        run: |
+          LOCAL_VERSION=$(node -p "require('./packages/sui-groups/package.json').version")
+          NPM_VERSION=$(npm view @mysten/sui-groups version 2>/dev/null || echo "0.0.0")
+          if [ "$LOCAL_VERSION" != "$NPM_VERSION" ]; then
+            echo "needed=true" >> $GITHUB_OUTPUT
+          else
+            echo "needed=false" >> $GITHUB_OUTPUT
+          fi
+          echo "Local: $LOCAL_VERSION, npm: $NPM_VERSION"
+      - name: Version packages
+        if: steps.changesets.outputs.pending == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          pnpm changeset-version
+      - name: Create Release Pull Request
+        if: steps.changesets.outputs.pending == 'true'
+        uses: peter-evans/create-pull-request@v7
         with:
-          version: pnpm changeset-version
-          publish: pnpm release
-          cwd: ts-sdks
+          title: 'Version Packages'
+          commit-message: 'Version Packages'
+          branch: changeset-release/main
+          body: |
+            This PR was opened by the Changesets workflow. When you're ready to release, merge this PR.
+      - name: Publish to npm
+        if: steps.publish-check.outputs.needed == 'true'
+        run: pnpm release
         env:
-          NPM_TOKEN: '' # https://github.com/changesets/changesets/issues/1152#issuecomment-3190884868
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ''
