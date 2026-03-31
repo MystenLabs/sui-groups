@@ -1,5 +1,12 @@
 # Sui Groups
 
+> [!NOTE]
+> The Sui Groups SDK is currently in Beta and available on both Testnet and Mainnet.
+>
+> The SDK is production-capable for many use cases, but developers should evaluate their own security, reliability, and operational requirements before deploying to production.
+>
+> For questions, feedback, or production discussions, reach out to the team on [Sui Discord](https://discord.com/channels/916379725201563759/1417696942074630194).
+
 A generic, reusable permissioned groups library for Sui. Define custom permission types, manage group membership, and build on-chain access control.
 
 While used by Messaging tooling, Groups is a general-purpose primitive for managing verifiable membership and permissions across applications.

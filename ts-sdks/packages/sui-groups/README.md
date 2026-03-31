@@ -1,5 +1,12 @@
 # @mysten/sui-groups
 
+> [!NOTE]
+> The Sui Groups SDK is currently in Beta and available on both Testnet and Mainnet.
+>
+> The SDK is production-capable for many use cases, but developers should evaluate their own security, reliability, and operational requirements before deploying to production.
+>
+> For questions, feedback, or production discussions, reach out to the team on [Sui Discord](https://discord.com/channels/916379725201563759/1417696942074630194).
+
 TypeScript SDK for permissioned groups on Sui. Create and manage groups with fine-grained, on-chain
 permissions using the [sui_groups](https://github.com/MystenLabs/sui-groups) Move package.
 
