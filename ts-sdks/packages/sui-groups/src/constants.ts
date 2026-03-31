@@ -9,8 +9,8 @@ export const TESTNET_SUI_GROUPS_PACKAGE_CONFIG = {
 } satisfies SuiGroupsPackageConfig;
 
 export const MAINNET_SUI_GROUPS_PACKAGE_CONFIG = {
-	originalPackageId: '0xTBD',
-	latestPackageId: '0xTBD',
+	originalPackageId: '0x541840ae7df705d1c6329c22415ed61f9140a18b79b13c1c9dc7415b115c1ba8',
+	latestPackageId: '0x541840ae7df705d1c6329c22415ed61f9140a18b79b13c1c9dc7415b115c1ba8',
 } satisfies SuiGroupsPackageConfig;
 
 /**
