@@ -9,7 +9,7 @@
 
 A generic, reusable permissioned groups library for Sui. Define custom permission types, manage group membership, and build on-chain access control.
 
-While used by Messaging tooling, Groups is a general-purpose primitive for managing verifiable membership and permissions across applications.
+While used by [Messaging tooling](https://github.com/MystenLabs/sui-stack-messaging), Groups is a general-purpose primitive for managing verifiable membership and permissions across applications.
 
 ## Key Concept
 
