@@ -77,7 +77,7 @@ export async function publishPackages({
 	const result = await testPublish({
 		packagePath: rootConfig.containerPath,
 		exec: async (command) => execCommand(command.split(' '), suiToolsContainerId),
-		buildEnv: 'localnet',
+		buildEnv: 'testnet',
 		publishUnpublishedDeps: packages.length > 1,
 	});
 
