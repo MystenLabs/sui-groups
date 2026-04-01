@@ -27,3 +27,4 @@ packages/walrus/src/client
 package.json
 pnpm-lock.yaml
 package_summaries/
+*.md
