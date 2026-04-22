@@ -16,7 +16,6 @@
 
 - No off-chain runtime, indexer, or backend.
 - No built-in persistence outside Sui state.
-- This TDD omits the "Database Design" template section (no DB) and C4 Levels 3 & 4 (auto-generated Move/TS reference docs cover that depth — see [SmartContracts.md](./SmartContracts.md), [APIRef.md](./APIRef.md)).
 
 Links: [README.md](../README.md), [SmartContracts.md](./SmartContracts.md), [Extending.md](./Extending.md), [Setup.md](./Setup.md).
 
@@ -347,7 +346,7 @@ sequenceDiagram
     SDK->>SDK: tx.grantPermission → call.grantPermission
     SDK->>SG: moveCall: latestPackageId::permissioned_group::grant_permission<T, Editor>
     SG->>SG: assert !is_paused
-    SG->>SG: is_core_permission<Editor>() == false<br/>→ require ExtensionPermissionsAdmin
+    SG->>SG: assert tx.sender has ExtensionPermissionsAdmin<br/>(is_core_permission<Editor>() == false<br/>→ require ExtensionPermissionsAdmin)
     SG->>SG: internal_grant_permission
     Note over SG: emit MemberAdded<T> (if new)<br/>emit PermissionsGranted<T>
     SG-->>SDK: tx success
